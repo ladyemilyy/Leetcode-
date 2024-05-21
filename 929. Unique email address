@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int numUniqueEmails(std::vector<std::string>& emails) {
+        std::unordered_set<std::string> final_set;
+        for(const auto& email : emails){
+            std::string local_name;
+            bool ignore = false;
+            bool domain_part = false;
+            for(char c : email){
+                if(c == '@') {
+                    ignore = false;
+                    domain_part = true;
+                    local_name.push_back(c);
+                } else if(c == '+' && !domain_part) {
+                    ignore = true;
+                } else if(!ignore && (c != '.' || domain_part)) {
+                    local_name.push_back(c);
+                }
+            }
+            final_set.insert(local_name);
+        }
+        return final_set.size();
+    }
+};
